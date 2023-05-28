@@ -1,0 +1,82 @@
+using System;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Step 1: Generate the first section of the array L in ascending order
+        int F1 = 0; // Start index of the first section
+        int L1 = 4; // End index of the first section
+        int[] section1 = new int[L1 - F1 + 1];
+        for (int i = 0; i < section1.Length; i++)
+        {
+            section1[i] = F1 + i;
+        }
+
+        // Step 2: Generate the second section of the array L in ascending order
+        int L2 = 9; // End index of the second section
+        int[] section2 = new int[L2 - L1];
+        for (int i = 0; i < section2.Length; i++)
+        {
+            section2[i] = L1 + 1 + i;
+        }
+
+        // Step 3: Print the array L with the two sorted sections
+        int[] L = new int[L2 + 1];
+        Array.Copy(section1, L, section1.Length);
+        Array.Copy(section2, 0, L, L1 + 1, section2.Length);
+
+        Console.WriteLine("Array L before merging:");
+        PrintArray(L);
+
+        // Step 4: Merge the two sections in ascending order without using an extra array
+        int i = F1;
+        int j = L1 + 1;
+        int k = L2;
+
+        while (i <= L1 && j <= L2)
+        {
+            if (L[i] < L[j])
+            {
+                L[k] = L[i];
+                i++;
+            }
+            else
+            {
+                L[k] = L[j];
+                j++;
+            }
+            k--;
+        }
+
+        // Copy any remaining elements from section1 (if any) to L
+        while (i <= L1)
+        {
+            L[k] = L[i];
+            i++;
+            k--;
+        }
+
+        // Copy any remaining elements from section2 (if any) to L
+        while (j <= L2)
+        {
+            L[k] = L[j];
+            j++;
+            k--;
+        }
+
+        // Step 5: Print the array L after merging
+        Console.WriteLine("Array L after merging:");
+        PrintArray(L);
+    }
+
+    // Helper method to print an array
+    static void PrintArray(int[] arr)
+    {
+        foreach (int num in arr)
+        {
+            Console.Write(num + " ");
+        }
+        Console.WriteLine();
+    }
+}
